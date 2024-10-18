@@ -87,6 +87,15 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
+				<version>4.0.0</version>
+				<executions>
+				  <execution>
+				    <goals>
+					 <goal>revision</goal>
+				    </goals>
+				    <!-- <phase>initialize</phase> -->
+				  </execution>
+				</executions>
 				<!-- <configuration>
 					<excludeProperties>
 					  <excludeProperty>time</excludeProperty>
@@ -96,10 +105,11 @@
 					  <property>git.branch</property>
 					</includeOnlyProperties>
 				   </configuration> -->
-				   <configuration>
+				   <!-- <configuration>
 					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
 					<generateGitPropertiesFile>true</generateGitPropertiesFile>
 				   </configuration>
+			-->
 			   </plugin>
 			   
 		

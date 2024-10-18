@@ -1,0 +1,27 @@
+management:
+  endpoint:
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info
+  info:
+    git:
+      mode: full
+    env:
+      enabled: true
+
+info:
+  application:
+    name: ${spring.application.name}
+    description: Very cool Spring Boot application
+    version: "@project.version@"
+    spring-boot-version: "@project.parent.version@"
+    branch: "@git.branch@"
+    commit-time: "@git.commit.time@"
+    commit-id: "@git.commit.id@"
+  commit:
+    branch: "@git.branch@"
+    commit-time: "@git.commit.time@"
+    commit-id: "@git.commit.id@"
