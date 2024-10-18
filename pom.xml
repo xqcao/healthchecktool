@@ -87,6 +87,19 @@
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
 				<artifactId>git-commit-id-plugin</artifactId>
+				<!-- <configuration>
+					<excludeProperties>
+					  <excludeProperty>time</excludeProperty>
+					</excludeProperties>
+					<includeOnlyProperties>
+					  <property>git.commit.id</property>
+					  <property>git.branch</property>
+					</includeOnlyProperties>
+				   </configuration> -->
+				   <configuration>
+					<dotGitDirectory>${project.basedir}/.git</dotGitDirectory>
+					<generateGitPropertiesFile>true</generateGitPropertiesFile>
+				   </configuration>
 			   </plugin>
 			   
 		
@@ -109,6 +122,7 @@
 					   <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
 					   <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
 					   <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+					   <includeOnlyProperty>^git.branch$</includeOnlyProperty>
 				    </includeOnlyProperties>
 				    <commitIdGenerationMode>full</commitIdGenerationMode>
 				</configuration>
