@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Actuator Info by Timestamp</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label, select, button {
+            display: block;
+            margin: 10px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Select Actuator Info by Timestamp</h1>
+
+    <label for="timestampSelect">Select Timestamp:</label>
+    <select id="timestampSelect">
+        <option value="">-- Select a Timestamp --</option>
+    </select>
+
+    <button id="fetchInfoBtn">Fetch Actuator Info</button>
+
+    <h2>Actuator Info Details</h2>
+    <div id="actuatorInfo">
+        <p>Select a timestamp to see details here...</p>
+    </div>
+
+    <script>
+    
+        // Fetch timestamps from the backend and populate the dropdown
+        async function loadTimestamps() {
+            try {
+                const response = await fetch('/timestamps');
+                const timestamps = await response.json();
+
+                const timestampSelect = document.getElementById('timestampSelect');
+                timestamps.forEach(timestamp => {
+                    const option = document.createElement('option');
+                    option.value = timestamp;
+                    option.textContent = timestamp;
+                    timestampSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading timestamps:', error);
+            }
+        }
+
+        // Fetch and display actuator info for the selected timestamp
+        async function fetchActuatorInfo() {
+            const selectedTimestamp = document.getElementById('timestampSelect').value;
+            if (!selectedTimestamp) {
+                alert('Please select a timestamp.');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/actuatorInfo/${selectedTimestamp}`);
+                const actuatorInfo = await response.json();
+               const app = actuatorInfo.infoDetail
+               
+               console.log(typeof app);
+               if(typeof app =="string"){
+                    details = JSON.parse(app);
+               }
+                // Display the actuator info in a table format
+                const actuatorInfoDiv = document.getElementById('actuatorInfo');
+                actuatorInfoDiv.innerHTML = `
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Timestamp</th>
+                            <th>Info Data</th>
+                        </tr>
+                        <tr>
+                            <td>${actuatorInfo.id}</td>
+                            <td>${actuatorInfo.timestamp}</td>
+                            <td>
+                              <!--
+                              <ul>
+                                   <li>App: ${details.application.name}</li>
+                                   <li>Version: ${details.application.version}</li>
+                                   <li>Branch: ${details.application.branch}</li>
+                                    <li>Commit ID: ${details.application['commit-id']}</li>
+                              </ul>
+                              -->
+                              <pre>${JSON.stringify(details, null, 2)} </pre>
+                            </td>
+                        </tr>
+                    </table>
+                `;
+            } catch (error) {
+                console.error('Error fetching actuator info:', error);
+            }
+        }
+
+        // Load timestamps on page load
+        window.onload = loadTimestamps;
+
+        // Add event listener to fetch button
+        document.getElementById('fetchInfoBtn').addEventListener('click', fetchActuatorInfo);
+
+        
+    </script>
+
+</body>
+</html>
